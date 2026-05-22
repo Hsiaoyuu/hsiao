@@ -80,27 +80,51 @@ if choice == '堤維西2020.1.2 至 2024.4.12':
 
 st.subheader("選擇資料時間區間")
 if choice == '台積電: 2022.1.1 至 2024.4.9':
-    start_date = st.text_input('輸入開始日期(日期格式: 2022-01-01), 區間:2022-01-01 至 2024-04-09', '2022-01-01')
-    end_date = st.text_input('輸入結束日期 (日期格式: 2024-04-09), 區間:2022-01-01 至 2024-04-09', '2024-04-09')
+    date_range = st.date_input(
+        '選擇日期區間 (2022-01-01 至 2024-04-09)',
+        value=(datetime.date(2022, 1, 1), datetime.date(2024, 4, 9)),
+        min_value=datetime.date(2022, 1, 1),
+        max_value=datetime.date(2024, 4, 9)
+    )
 
 if choice == '大台指期貨2024.12到期: 2023.12 至 2024.4.11':
-    start_date = st.text_input('輸入開始日期(日期格式: 2023-12-21), 區間:2023-12-21 至 2024-04-11', '2023-12-21')
-    end_date = st.text_input('輸入結束日期 (日期格式: 2024-04-11), 區間:2023-12-21 至 2024-04-11', '2024-04-11')
+    date_range = st.date_input(
+        '選擇日期區間 (2023-12-21 至 2024-04-11)',
+        value=(datetime.date(2023, 12, 21), datetime.date(2024, 4, 11)),
+        min_value=datetime.date(2023, 12, 21),
+        max_value=datetime.date(2024, 4, 11)
+    )
 
 if choice == '小台指期貨2024.12到期: 2023.12 至 2024.4.11':
-    start_date = st.text_input('輸入開始日期(日期格式: 2023-12-21), 區間:2023-12-21 至 2024-04-11', '2023-12-21')
-    end_date = st.text_input('輸入結束日期 (日期格式: 2024-04-11), 區間:2023-12-21 至 2024-04-11', '2024-04-11')
+    date_range = st.date_input(
+        '選擇日期區間 (2023-12-21 至 2024-04-11)',
+        value=(datetime.date(2023, 12, 21), datetime.date(2024, 4, 11)),
+        min_value=datetime.date(2023, 12, 21),
+        max_value=datetime.date(2024, 4, 11)
+    )
 
 if choice == '英業達2020.1.2 至 2024.4.12':
-    start_date = st.text_input('輸入開始日期(日期格式: 2020-01-02), 區間:2020-01-02 至 2024-04-12', '2020-01-02')
-    end_date = st.text_input('輸入結束日期 (日期格式: 2024-04-12), 區間:2020-01-02 至 2024-04-12', '2024-04-12')
+    date_range = st.date_input(
+        '選擇日期區間 (2020-01-02 至 2024-04-12)',
+        value=(datetime.date(2020, 1, 2), datetime.date(2024, 4, 12)),
+        min_value=datetime.date(2020, 1, 2),
+        max_value=datetime.date(2024, 4, 12)
+    )
 
 if choice == '堤維西2020.1.2 至 2024.4.12':
-    start_date = st.text_input('輸入開始日期(日期格式: 2020-01-02), 區間:2020-01-02 至 2024-04-12', '2020-01-02')
-    end_date = st.text_input('輸入結束日期 (日期格式: 2024-04-12), 區間:2020-01-02 至 2024-04-12', '2024-04-12')
+    date_range = st.date_input(
+        '選擇日期區間 (2020-01-02 至 2024-04-12)',
+        value=(datetime.date(2020, 1, 2), datetime.date(2024, 4, 12)),
+        min_value=datetime.date(2020, 1, 2),
+        max_value=datetime.date(2024, 4, 12)
+    )
 
-start_date = datetime.datetime.strptime(start_date, '%Y-%m-%d')
-end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d')
+if len(date_range) != 2:
+    st.warning("請選擇完整的開始與結束日期。")
+    st.stop()
+
+start_date = datetime.datetime.combine(date_range[0], datetime.time.min)
+end_date = datetime.datetime.combine(date_range[1], datetime.time.min)
 df = df_original[(df_original['time'] >= start_date) & (df_original['time'] <= end_date)].copy()
 
 if len(df) == 0:
